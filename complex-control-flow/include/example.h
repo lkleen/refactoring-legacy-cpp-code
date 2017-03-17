@@ -2,14 +2,6 @@
 namespace ComplexControlFlow
 {
 
-enum class State : int
-{
-	insertCoins,
-	validateCoins,
-	rejectCoins,
-	releaseCandies,
-};
-
 enum class Type : int
 {
 	A,
