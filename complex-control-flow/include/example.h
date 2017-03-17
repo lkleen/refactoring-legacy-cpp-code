@@ -17,17 +17,22 @@ enum class Type : int
 	C
 };
 
-class AllPurposeImplementation
+class BaseImplementation
 {
 public:
-	AllPurposeImplementation (Type type) 
+	BaseImplementation (Type type) 
 		: type (type)
 	{}
 
 	int process (int value) const
 	{
 		value *= 10;
-		
+		return calculateValue (value);
+	}
+
+protected:
+	int calculateValue (int value) const
+	{
 		switch (type)
 		{
 		case Type::A:
@@ -51,7 +56,7 @@ class Owner
 {
 public:
 	Owner (Type type)
-		: impl (AllPurposeImplementation (type))
+		: impl (BaseImplementation (type))
 	{}
 
 	void process (int value) const
@@ -61,7 +66,7 @@ public:
 	}
 
 private:
-	const AllPurposeImplementation impl;
+	const BaseImplementation impl;
 };
 
 
