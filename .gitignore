@@ -1,0 +1,10 @@
+mac
+*.db
+gyp
+mac
+Win32
+x64
+*.db
+*.opendb
+*.suo
+
