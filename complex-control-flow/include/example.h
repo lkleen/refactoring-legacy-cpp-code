@@ -20,9 +20,8 @@ enum class Type : int
 class BaseImplementation
 {
 public:
-	BaseImplementation (Type type) 
-		: type (type)
-	{}
+
+	virtual ~BaseImplementation () = default;
 
 	int process (int value) const
 	{
@@ -31,42 +30,73 @@ public:
 	}
 
 protected:
-	int calculateValue (int value) const
+	virtual int calculateValue (int value) const = 0;
+};
+
+class TypeAImplementation : public BaseImplementation
+{
+protected:
+	int calculateValue (int value) const final override
 	{
-		switch (type)
-		{
-		case Type::A:
-			return value + 1;
-			break;
-		case Type::B:
-			return value + 2;
-			break;
-		case Type::C:
-			return value + 3;
-			break;
-		default:
-			return -1;
-		}
+		return value + 1;
 	}
-private:
-	const Type type;
+};
+
+class TypeBImplementation : public BaseImplementation
+{
+protected:
+	int calculateValue (int value) const final override
+	{
+		return value + 2;
+	}
+};
+
+class TypeCImplementation : public BaseImplementation
+{
+protected:
+	int calculateValue (int value) const final override
+	{
+		return value + 3;
+	}
 };
 
 class Owner
 {
 public:
 	Owner (Type type)
-		: impl (BaseImplementation (type))
+		: impl (createImplementationFor (type))
 	{}
+
+	~Owner ()
+	{
+		delete impl;
+	}
 
 	void process (int value) const
 	{
 		using namespace std;
-		cout << "input: " << value << " output: " << impl.process (value) << endl;
+		cout << "input: " << value << " output: " << impl->process (value) << endl;
 	}
 
 private:
-	const BaseImplementation impl;
+
+	BaseImplementation* createImplementationFor (Type type)
+	{
+		switch (type)
+		{
+		case ComplexControlFlow::Type::A:
+			return new TypeAImplementation;
+		case ComplexControlFlow::Type::B:
+			return new TypeBImplementation;
+		case ComplexControlFlow::Type::C:
+			return new TypeCImplementation;
+		default:
+			return nullptr;
+		}
+	}
+
+	const BaseImplementation* impl;
+	
 };
 
 
